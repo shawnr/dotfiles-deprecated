@@ -161,7 +161,6 @@ if [[ -n "$PS1" ]] ; then
 
     # Aliases
     alias rvim="gvim --remote-silent"
-    alias emacs='echo "You are trying to learn vi... type \`vi\` instead."'
     alias em="emacs"
     alias ll="ls -alh"
     alias wget="wget --no-check-certificate"
