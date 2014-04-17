@@ -3,6 +3,7 @@ if [[ -n "$PS1" ]] ; then
     set -o vi
     export PATH=~/.powerline/scripts:$PATH
 
+    export GEM_HOME=~/gems
     export LANG="en_US.UTF-8"
     export LC_COLLATE="en_US.UTF-8"
     export LC_CTYPE="en_US.UTF-8"
@@ -161,6 +162,7 @@ if [[ -n "$PS1" ]] ; then
 
     # Aliases
     alias rvim="gvim --remote-silent"
+    alias emacs="/usr/local/Cellar/emacs/24.3/Emacs.app/Contents/MacOS/Emacs -nw"
     alias em="emacs"
     alias ll="ls -alh"
     alias wget="wget --no-check-certificate"
@@ -239,4 +241,4 @@ if [[ -n "$PS1" ]] ; then
 
 fi
 
-export PATH=$PATH:$HOME/.virtualenvs/default/bin
+export PATH=$PATH:$HOME/.virtualenvs/default/bin:$HOME/bin
