@@ -1,3 +1,17 @@
+These are dotfile configs for a Macbook Pro setup for web development in Ruby and Python (although it should be friendly to many others). You are welcome to use them, although your mileage may vary depending on how much you like the decisions I have made (or that my friend Nowell has made).
+
+How to Install
+==============
+
+* Clone this repo
+* It's a good idea to browse the files so you can see what you are putting into place. There are a couple of places where names and emails are used.
+* Run ``make``
+* Run ``make install``
+
+The large ``brew install`` statement in the ``Makefile`` is prone to issues if brew bottles change.
+
+---
+
 Install vcprompt: https://bitbucket.org/mitsuhiko/vcprompt
 
 If you want fancy colors in the Terminal, you will need the SIMBL
