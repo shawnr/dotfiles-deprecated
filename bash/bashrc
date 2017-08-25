@@ -3,7 +3,6 @@ if [[ -n "$PS1" ]] ; then
     set -o vi
     export PATH=~/.powerline/scripts:$PATH
 
-    export GEM_HOME=~/gems
     export LANG="en_US.UTF-8"
     export LC_COLLATE="en_US.UTF-8"
     export LC_CTYPE="en_US.UTF-8"
@@ -12,18 +11,6 @@ if [[ -n "$PS1" ]] ; then
     export LC_NUMERIC="en_US.UTF-8"
     export LC_TIME="en_US.UTF-8"
     export LC_ALL="en_US.UTF-8"
-
-    # TMUX
-    if which tmux 2>&1 >/dev/null; then
-      # if no session is started, start a new session
-      test -z "$TMUX" && tmux
-      #test -z "$TMUX" && (tmux attach || tmux new-session)
-
-      # when quitting tmux, try to attach
-      while test -z ${TMUX}; do
-        tmux attach || break
-      done
-    fi
 
     [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
 
@@ -56,20 +43,11 @@ if [[ -n "$PS1" ]] ; then
     BGC="\033[46m"
     BGW="\033[47m"
 
-    _powerline_tmux_setenv() {
-      if [[ -n "$TMUX" ]]; then
-        tmux setenv TMUX_"$1"_$(tmux display -p "#D" | tr -d %) "$2"
-      fi
-    }
 
-    _powerline_tmux_set_columns() {
-      _powerline_tmux_setenv COLUMNS "$COLUMNS"
-    }
 
     # set up command prompt
     __prompt_command()
     {
-        _powerline_tmux_setenv PWD "$PWD"
 
         if [[ -h ".ve" && -d ".ve" ]]; then
             VE_DIR="`readlink .ve 2>/dev/null`"
@@ -93,38 +71,10 @@ if [[ -n "$PS1" ]] ; then
             workon default 2> /dev/null
         fi
 
-        if [ -n "$TMUX" ]; then
-            # Setup prompt title name for screen session tab naming.
-            PROMPT_TITLE='shell'
-            if [[ "$VIRTUAL_ENV" != "" && `basename $VIRTUAL_ENV` != "default" ]]; then
-                PROMPT_TITLE=`basename $VIRTUAL_ENV`
-            else
-                DIR="$PWD"
-                LASTDIR=""
-                until [[ $LASTDIR = $DIR ]]; do
-                    if [ -f "${DIR}/.git/HEAD" ]; then
-                        PROMPT_TITLE=$(basename "$DIR")
-                        break
-                    fi
-                    if [ -f "${DIR}/.hg/branch" ]; then
-                        PROMPT_TITLE=$(basename "$DIR")
-                        break
-                    fi
-                    LASTDIR=$DIR
-                    DIR=$(dirname "$DIR")
-                done
-            fi
-            #echo -ne "\ek$PROMPT_TITLE\e\\"
-            echo -ne '\033k'$PROMPT_TITLE'\033\\'
-        fi
-
-        AWESOME_PS1="\n$(powerline shell left --last_exit_code=$EXIT)\n$ "
+        AWESOME_PS1="\n$(powerline shell left --last-exit-code=$EXIT)\n$ "
 
         PS1=$AWESOME_PS1
     }
-
-    trap "_powerline_tmux_set_columns" SIGWINCH
-    kill -SIGWINCH "$$"
 
     export PROMPT_COMMAND="EXIT=\$?; ${PROMPT_COMMAND:+$PROMPT_COMMAND ;} __prompt_command;  history -a"
 
@@ -136,7 +86,7 @@ if [[ -n "$PS1" ]] ; then
     export CLICOLOR=1
     export LSCOLORS=ExGxFxDxCxHxHxCbCeEbEb
     export LC_CTYPE=en_US.utf-8
-    export PATH=~/bin:/usr/local/sbin:/usr/local/bin:~/.local/bin:$PATH
+    export PATH=/usr/local/bin:~/bin:/usr/local/sbin:~/.local/bin:$PATH
     export PATH=$PATH:/usr/local/mysql/bin
     export IGNOREEOF=1
     export PYTHONDONTWRITEBYTECODE=1
@@ -156,7 +106,7 @@ if [[ -n "$PS1" ]] ; then
         export PIP_RESPECT_VIRTUALENV=true
         export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
         export VIRTUALENV_USE_DISTRIBUTE=1
-        #export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+        #export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
         source /usr/local/bin/virtualenvwrapper.sh
     fi
 
@@ -226,13 +176,13 @@ if [[ -n "$PS1" ]] ; then
 
     export HTML_TIDY=~/.bashrc.d/htmltidy
 
-    export RUBY_HEAP_MIN_SLOTS=1000000
+    export RUBY_GC_HEAP_INIT_SLOTS=1000000
     export RUBY_HEAP_SLOTS_INCREMENT=1000000
     export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1
     export RUBY_GC_MALLOC_LIMIT=100000000
     export RUBY_HEAP_FREE_MIN=500000
 
-    export PYTHONPATH=$(brew --prefix)/lib/python2.7/site-packages
+    # export PYTHONPATH=$(brew --prefix)/lib/python2.7/site-packages
     export PYTHONPATH=$PYTHONPATH:~/.config/powerline/custompowerline
 
     # This ensures that gpg agent can prompt us for passwords on subshell commands
@@ -242,3 +192,25 @@ if [[ -n "$PS1" ]] ; then
 fi
 
 export PATH=$PATH:$HOME/.virtualenvs/default/bin:$HOME/bin
+
+# redis
+alias redis-start="redis-server /usr/local/etc/redis.conf"
+
+# elasticsearch
+alias elasticsearch-start="elasticsearch --config=/usr/local/opt/elasticsearch/config/elasticsearch.yml"
+
+# postgres
+alias postgres-start="postgres -D /usr/local/var/postgres"
+
+# mongo
+alias mongodb-start="mongod run --config /usr/local/etc/mongod.conf"
+
+# Docker Compose
+alias dc="docker-compose"
+
+# Python 3 venv convenience
+
+mkvenv() {
+    python3 -m venv ~/.virtualenvs/"$1";
+    workon "$1";
+}

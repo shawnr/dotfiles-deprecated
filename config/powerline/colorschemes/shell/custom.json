@@ -14,7 +14,7 @@
 		"mediumcyan": 117,
 		"brightcyan": 159,
 
-    "lightblue": 81,
+    	"lightblue": 81,
 		"darkestblue": 24,
 		"darkblue": 31,
 
@@ -58,7 +58,6 @@
 		"user": { "fg": "white", "bg": "darkblue", "attr": ["bold"] },
 		"superuser": { "fg": "white", "bg": "brightred", "attr": ["bold"] },
 		"virtualenv": { "fg": "white", "bg": "mediumorange" },
-		"rvm": { "fg": "gray3", "bg": "brightyellow" },
 		"branch": { "fg": "white", "bg": "mediumgreen" },
 		"masterbranch": { "fg": "white", "bg": "brightred" },
 		"cwd": { "fg": "gray9", "bg": "gray4" },
